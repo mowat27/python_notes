@@ -14,11 +14,11 @@ class Integer:
         self._can_delete = can_delete
 
     def __set__(self, instance, value):
-        if type(value) != int:
+        if not isinstance(value, int):
             raise ValueError('expected int')
         instance.__dict__[self._name] = value
 
-    def __get__(self, instance, owner=None):
+    def __get__(self, instance, cls):
         return instance.__dict__[self._name]
 
     def __delete__(self, instance):
@@ -44,8 +44,16 @@ class Point:
         return 'Point({},{})'.format(self.x, self.y)
 
 pt = Point(1,2)
-my_x = pt.__class__.__dict__['x'].__get__(pt)
+my_x = pt.__class__.__dict__['x'].__get__(pt, Point)
 assert my_x == pt.x
 
 pt.__class__.__dict__['y'].__set__(pt, 25)
 assert pt.y == 25
+
+print("pt =", pt)
+
+try:
+    del(pt.x)
+    raise RuntimeError('Should not be here')
+except:
+    print("Can't delete pt.x")
