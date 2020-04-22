@@ -43,7 +43,8 @@ class Point:
     def __repr__(self):
         return 'Point({},{})'.format(self.x, self.y)
 
-pt = Point(1,2)
+
+pt = Point(1, 2)
 my_x = pt.__class__.__dict__['x'].__get__(pt, Point)
 assert my_x == pt.x
 
@@ -51,6 +52,7 @@ pt.__class__.__dict__['y'].__set__(pt, 25)
 assert pt.y == 25
 
 print("pt =", pt)
+print("__dict__ is same as normal", pt.__dict__)
 
 try:
     del(pt.x)
